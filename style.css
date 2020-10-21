@@ -1,0 +1,15 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+/*responsive screen*/
+@media (max-width: 690px) {
+
+  }
+  
+  @media (max-width: 500px) {
+
+  }
