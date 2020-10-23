@@ -57,40 +57,57 @@ $(document).ready(function () {
   );
   //upon clicking start, call displying question function
   $("#startBut").on("click", displayQuestion);
+
   function displayQuestion() {
     //check if test reaches the end
-    /* if (questionCount >= questions.length) {
+    if (questionCount >= questions.length) {
       //output result
-      $("#mainContent").html("You have completed the quiz.")
+      $("#mainContent").html("You have completed the quiz.");
       //reset quiz
       questionCount = 0;
       correctCount = 0;
-    }*/
+    }
+    else {
+      $("#mainContent").html(
+        "<h3 id='questionPromt'>" +
+          questions[questionCount].prompt +
+          "</h3>" +
+          "<div id='choiceOptions'></div>"
+      );
+      //display options as radio class from bootstrap with default stacking(maybe need to condense code here)
+      $("#choiceOptions").append(
+        "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='A'>" +
+          questions[questionCount].a +
+          "</label></div>"
+      );
+      $("#choiceOptions").append(
+        "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='B'>" +
+          questions[questionCount].b +
+          "</label></div>"
+      );
+      $("#choiceOptions").append(
+        "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='C'>" +
+          questions[questionCount].c +
+          "</label></div>"
+      );
+      $("#choiceOptions").append(
+        "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='D'>" +
+          questions[questionCount].d +
+          "</label></div>"
+      );
+      $(".btn").on("click", checkAns);
+    }
     //if test is not finished yet
-    $("#mainContent").html("<p id='questionPromt'>" + questions[questionCount].prompt + "</p>" + "<div id='choiceOptions'></div>");
-    /*var optionA = questions[questionCount].a;
-    var optionB = questions[questionCount].b;
-    var optionC = questions[questionCount].c;
-    var optionD = questions[questionCount].d;*/
-    $("#choiceOptions").append("<div class='form-check'><input type='radio' name='options' value='A'>" +
-      questions[questionCount].a +
-      "</div>");
-    $("#choiceOptions").append(
-      "<div class='form-check'><input type='radio' name='options' value='B'>" +
-      questions[questionCount].b +
-      "</div>");
-    $("#choiceOptions").append(
-      "<div class='form-check'><input type='radio' name='options' value='C'>" +
-      questions[questionCount].c +
-      "</div>");
-    $("#choiceOptions").append(
-      "<div class='form-check'><input type='radio' name='options' value='D'>" +
-      questions[questionCount].d +
-      "</div>");
+    //display each question prompt
+    
+    //display options as radio class from bootstrap with default stacking(maybe need to condense code here)
+    
+  }
 
-    //display prompt as h1
-    //display options as radio class from bootstrap
-    //call on check answer function
+  function checkAns() {
+    questionCount++;
+    displayQuestion();
+    console.log(questionCount);
   }
 });
 
