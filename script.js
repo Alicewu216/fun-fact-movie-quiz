@@ -37,7 +37,7 @@ $(document).ready(function () {
       answer: "a",
     },
     {
-      prompt: "5. In what yest is The Great Gastby set?",
+      prompt: "5. In what year is The Great Gastby set?",
       a: "1925",
       b: "1923",
       c: "1924",
@@ -48,6 +48,8 @@ $(document).ready(function () {
   //other global variable
   var questionCount = 0;
   var correctCount = 0;
+  var answerPicked = 0;
+  var secondLeft = 20;
 
   //upon loading, show starting page
   $("#mainContent").html(
@@ -56,72 +58,92 @@ $(document).ready(function () {
       "<button id='startBut' class='btn btn-lg'>Start Quiz</button>"
   );
   //upon clicking start, call displying question function
-  $("#startBut").on("click", displayQuestion);
-
+  $("#startBut").on("click", function () {
+    displayQuestion();
+    keepTimer();
+  });
+  //function that get and display current question
   function displayQuestion() {
     //check if test reaches the end
     if (questionCount >= questions.length) {
       //output result
-      $("#mainContent").html("You have completed the quiz.");
-      //reset quiz
-      questionCount = 0;
-      correctCount = 0;
+      terminateQuiz();
     }
+    //if test is not finished yet
     else {
+      //display each question prompt
       $("#mainContent").html(
-        "<h3 id='questionPromt'>" +
-          questions[questionCount].prompt +
-          "</h3>" +
-          "<div id='choiceOptions'></div>"
+        "<h3 id='questionPromt'>" + questions[questionCount].prompt + "</h3>"
       );
       //display options as radio class from bootstrap with default stacking(maybe need to condense code here)
-      $("#choiceOptions").append(
+      $("#mainContent").append(
         "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='A'>" +
           questions[questionCount].a +
           "</label></div>"
       );
-      $("#choiceOptions").append(
+      $("#mainContent").append(
         "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='B'>" +
           questions[questionCount].b +
           "</label></div>"
       );
-      $("#choiceOptions").append(
+      $("#mainContent").append(
         "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='C'>" +
           questions[questionCount].c +
           "</label></div>"
       );
-      $("#choiceOptions").append(
+      $("#mainContent").append(
         "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='D'>" +
           questions[questionCount].d +
           "</label></div>"
       );
+      //call checkAns function once an option is picked
       $(".btn").on("click", checkAns);
     }
-    //if test is not finished yet
-    //display each question prompt
-    
-    //display options as radio class from bootstrap with default stacking(maybe need to condense code here)
-    
   }
-
+  //check option picked
   function checkAns() {
+    var optionsselected = document.getElementsByName("options");
+    console.log(optionsselected);
+    for (var j = 0; j < optionsselected.length; j++) {
+      if (optionsselected[j].checked) {
+        answerPicked = optionsselected[j].value;
+      }
+    }
+    //check if picked option value match with correct answer for all save value
+    if (answerPicked == questions[questionCount].answer) {
+      //add 1 to correctCount if picked correct answer
+      correctCount++;
+      //display "correct" below question
+      $("#mainContent").append("<p>Correct!</p>");
+    }
+    //if option picked is wrong
+    else {
+      //display "incorrect" below question
+      $("#mainContent").append("<p>Incorrect!</p>");
+    }
+    //add to question Count and display next question
     questionCount++;
     displayQuestion();
-    console.log(questionCount);
+  }
+
+  //timer function
+  function keepTimer() {
+    var timeInterval = setInterval(function () {
+      secondLeft--;
+      $("#quizTimer").text("Time Remain: " + secondLeft);
+
+    if (secondLeft === 0) {
+      clearInterval(timeInterval);
+      terminateQuiz();
+    }
+    }, 1000);
+  }
+
+  function terminateQuiz() {
+    //output result
+    $("#mainContent").html("You have completed the quiz.");
+    //reset quiz
+    questionCount = 0;
+    correctCount = 0;
   }
 });
-
-//display question function
-//function getQuestion() {
-
-//get current question (with maybe a for loop: terminate function at the end and allows restart)
-
-//display question
-//display options
-
-//check correctness of answer
-//compare user choice with answer
-//add score is anser match
-//call display function to display next question
-
-//timer function
