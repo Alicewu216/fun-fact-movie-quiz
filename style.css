@@ -5,18 +5,33 @@
 }
 
 div#mainContent{
-  border:#5AB029 3px solid;
+  border:rgb(142, 155, 214) 5px solid;
   margin: auto;
   padding:10px 40px 40px 40px;
-  background-color:#E5FCE3;
+  background-color:  rgb(240, 211, 227);
   width:50%;}
 
 
 /*responsive screen*/
 @media (max-width: 690px) {
+  div#mainContent{
+    border:rgb(142, 155, 214) 5px solid;
+    margin: auto;
+    padding:10px 40px 40px 40px;
+    background-color: rgb(240, 211, 227);
+    width:80%;}
+  h1{
+    font-size: 30px;
+  }
 
   }
   
   @media (max-width: 500px) {
+    div#mainContent{
+      border:rgb(142, 155, 214) 5px solid;
+      margin: auto;
+      padding:10px 40px 40px 40px;
+      background-color:  rgb(240, 211, 227);
+      width:70%;}
 
   }

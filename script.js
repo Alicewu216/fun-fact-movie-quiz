@@ -51,7 +51,8 @@ $(document).ready(function () {
   var answerPicked = "";
   var secondLeft = 60;
   var timeInterval = 0;
-
+  var highestScore = 0;
+  var highScoreUserOutput = "";
   startpage();
 
   function startpage() {
@@ -168,21 +169,25 @@ $(document).ready(function () {
     $("#inputDiv").append(
       "<button type='submit' class='btn btn-sm' id='submitBtn'>Submit</button>"
     );
-    var userSavedInitial = document.querySelector("#userInitial").value;
-    localStorage.setItem("score", correctCount);
-    localStorage.setItem("initial", userSavedInitial);
+    var userSavedInitial = document.querySelector("#userInitial");
+    var userScore = correctCount;
+
     //save initial to local storage
 
     $("#submitBtn").on("click", function (event) {
       event.preventDefault();
+      var user = {
+        userinitial: userSavedInitial.value,
+        userscore: userScore,
+      };
 
-      
-
-      if (userSavedInitial === "") {
+      if (user.userinitial === "") {
         alert("Initial cannot be blank");
       } else {
         alert("Score saved successfully");
-        
+
+        console.log(user);
+        localStorage.setItem("user", JSON.stringify(user));
       }
       //to the highscore page
       highscorePage();
@@ -194,17 +199,31 @@ $(document).ready(function () {
 
   //highscore page initation function
   function highscorePage() {
+    console.log(highestScore);
+    var currentuser = JSON.parse(localStorage.getItem("user"));
+
     $("#mainContent").html(
       "<h1>Highscores</h1>" +
-        "<p>Highestscore</p>" +
+        "<p id='scoreRank'></p>" +
         "<div id='resetBtns'></div>"
     );
     $("#resetBtns").append(
       "<button type='button' class='btn btn-sm' id='restartQuiz'>Go Back</button>" +
-        "<button type='button' class='btn btn-sm' id='clearSCore'>Clear Highscores</button>"
+        "<button type='button' class='btn btn-sm' id='clearScore'>Clear Highscores</button>"
     );
-
+if (currentuser.userscore > highestScore) {
+      highestScore = currentuser.userScore;
+      highScoreUserOutput =
+        currentuser.userinitial + ": " + currentuser.userscore;
+      $("#scoreRank").text(highScoreUserOutput);
+      console.log(highScoreUserOutput);
+    }
     //if pressgoback, restartquiz
-    $("#restartQuiz").on("click",startpage);
+    $("#restartQuiz").on("click", startpage);
+
+    $('#clearScore').on("click",function() {
+    $("#scoreRank").text("No Score available yet");
+
+    });
   }
 });
