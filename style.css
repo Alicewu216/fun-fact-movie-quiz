@@ -44,11 +44,15 @@ div#mainContent {
 }
 
 @media (max-width: 500px) {
+
+  #highScorePage {
+    size: 20px;
+  }
   div#mainContent {
     border: rgb(142, 155, 214) 5px solid;
     margin: auto;
     padding: 10px 40px 40px 40px;
     background-color: rgb(240, 211, 227);
-    width: 70%;
+    width: 90%;
   }
 }

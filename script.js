@@ -58,6 +58,7 @@ $(document).ready(function () {
   startpage();
 
   function startpage() {
+    
     //upon loading, show starting page
     $("#mainContent").html(
       "<h1 id='homePageTitle'>Funfact Movie Quiz Challenge</h1>" +
@@ -66,7 +67,6 @@ $(document).ready(function () {
     );
     //upon clicking start, call displying question function
     $("#startBut").on("click", function () {
-      x.style.display = "block";
       displayQuestion();
       keepTimer();
     });
@@ -74,6 +74,7 @@ $(document).ready(function () {
 
   //function that get and display current question
   function displayQuestion() {
+    x.style.display = "block";
     //check if test reaches the end
     if (questionCount >= questions.length) {
       //output result
@@ -116,21 +117,21 @@ $(document).ready(function () {
     for (var j = 0; j < options.length; j++) {
       if (options[j].checked) {
         answerPicked = options[j].value;
-        console.log(answerPicked);
       }
     }
 
     //check if picked option value match with correct answer for all save value
     if (answerPicked == questions[questionCount].answer) {
-      $("#mainContent").append("<div><p>Correct!</p></div>");
       //add 1 to correctCount if picked correct answer
+      $(".form-check-input").attr("class","btn btn-lg form-check-label bg-light btn-outline-success");
       correctCount++;
       console.log("correct");
+
       //display "correct" below question
     }
     //if option picked is wrong
     else {
-      $("#mainContent").append("<p>Incorrect!</p>");
+      $(".form-check-input").attr("class","btn btn-lg form-check-label bg-light btn-outline-warning");
       console.log("incorrect");
       secondLeft = secondLeft - 10;
       //display "incorrect" below question
