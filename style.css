@@ -12,6 +12,26 @@ div#mainContent {
   width: 50%;
 }
 
+.btn.btn-lg {
+  margin: 5px;
+}
+
+.btn.btn-sm {
+  margin: 5px;
+}
+
+#scoreRank {
+  border-radius: 10px;
+  background-color: white;
+  padding: 3px;
+}
+
+#userInitial {
+  margin: 5px;
+}
+
+
+
 /*responsive screen*/
 @media (max-width: 690px) {
   div#mainContent {

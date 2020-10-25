@@ -62,7 +62,7 @@ $(document).ready(function () {
     $("#mainContent").html(
       "<h1 id='homePageTitle'>Funfact Movie Quiz Challenge</h1>" +
         "<p id='homePagePara'>Try to answer the following funfact movie questions within the time limit. Keep in mind that incorrect answers will penalize your score and subtract 10 seconds from your time.</p>" +
-        "<button id='startBut' class='btn btn-lg'>Start Quiz</button>"
+        "<button id='startBut' class='btn btn-lg bg-light btn-outline-secondary'>Start Quiz</button>"
     );
     //upon clicking start, call displying question function
     $("#startBut").on("click", function () {
@@ -87,22 +87,22 @@ $(document).ready(function () {
       );
       //display options as radio class from bootstrap with default stacking(maybe need to condense code here)
       $("#mainContent").append(
-        "<div class='form-check'><label for='optionA' class='btn btn-lg btn-secondary form-check-label'><input class='form-check-input' type='radio' name='options' id='optionA' value='A'>" +
+        "<div class='form-check'><label for='optionA' class='btn btn-lg form-check-label bg-light btn-outline-secondary'><input class='form-check-input' type='radio' name='options' id='optionA' value='A'>" +
           questions[questionCount].a +
           "</label></div>"
       );
       $("#mainContent").append(
-        "<div class='form-check'><label for='optionB' class='btn btn-lg btn-secondary form-check-label'><input class='form-check-input' type='radio' name='options' id='optionB' value='B'>" +
+        "<div class='form-check'><label for='optionB' class='btn btn-lg form-check-label bg-light btn-outline-secondary'><input class='form-check-input' type='radio' name='options' id='optionB' value='B'>" +
           questions[questionCount].b +
           "</label></div>"
       );
       $("#mainContent").append(
-        "<div class='form-check'><label for='optionC' class='btn btn-lg btn-secondary form-check-label '><input class='form-check-input' type='radio' name='options' id='optionC' value='C'>" +
+        "<div class='form-check'><label for='optionC' class='btn btn-lg form-check-label bg-light btn-outline-secondary'><input class='form-check-input' type='radio' name='options' id='optionC' value='C'>" +
           questions[questionCount].c +
           "</label></div>"
       );
       $("#mainContent").append(
-        "<div class='form-check'><label for='optionD' class='btn btn-lg btn-secondary form-check-label'><input class='form-check-input' type='radio' name='options' id='optionD' value='D'>" +
+        "<div class='form-check'><label for='optionD' class='btn btn-lg form-check-label bg-light btn-outline-secondary'><input class='form-check-input' type='radio' name='options' id='optionD' value='D'>" +
           questions[questionCount].d +
           "</label></div>"
       );
@@ -171,7 +171,7 @@ $(document).ready(function () {
         "<input type='text' name='userInitial' id='userInitial' placeholder='your initial here'/>"
     );
     $("#inputDiv").append(
-      "<button type='submit' class='btn btn-sm' id='submitBtn'>Submit</button>"
+      "<button type='submit' class='btn btn-sm bg-light btn-outline-secondary' id='submitBtn'>Submit</button>"
     );
     var userSavedInitial = document.querySelector("#userInitial");
     var userScore = correctCount;
@@ -207,13 +207,13 @@ $(document).ready(function () {
     var currentuser = JSON.parse(localStorage.getItem("user"));
 
     $("#mainContent").html(
-      "<h1>Highscores</h1>" +
+      "<h1 id=>Highscores</h1>" +
         "<p id='scoreRank'></p>" +
         "<div id='resetBtns'></div>"
     );
     $("#resetBtns").append(
-      "<button type='button' class='btn btn-sm' id='restartQuiz'>Go Back</button>" +
-        "<button type='button' class='btn btn-sm' id='clearScore'>Clear Highscores</button>"
+      "<button type='button' class='btn btn-sm bg-light btn-outline-secondary' id='restartQuiz'>Go Back</button>" +
+        "<button type='button' class='btn btn-sm bg-light btn-outline-secondary' id='clearScore'>Clear Highscores</button>"
     );
     if (currentuser.userscore > highestScore) {
       highestScore = currentuser.userScore;
