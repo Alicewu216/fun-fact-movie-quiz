@@ -55,11 +55,12 @@ $(document).ready(function () {
   var highScoreUserOutput = "";
   var x = document.getElementById("quizTimer");
 
+  //call staring function to home page
   startpage();
-
+  //staring functiong that load starting homepage on screen
   function startpage() {
     
-    //upon loading, show starting page
+    //upon loading, show starting page with quiz rule and start button
     $("#mainContent").html(
       "<h1 id='homePageTitle'>Funfact Movie Quiz Challenge</h1>" +
         "<p id='homePagePara'>Try to answer the following funfact movie questions within the time limit. Keep in mind that incorrect answers will penalize your score and subtract 10 seconds from your time.</p>" +
@@ -67,15 +68,18 @@ $(document).ready(function () {
     );
     //upon clicking start, call displying question function
     $("#startBut").on("click", function () {
+      //print questions on screen
       displayQuestion();
+      //start timer
       keepTimer();
     });
   }
 
   //function that get and display current question
   function displayQuestion() {
+    //show hidhen timer when timer reset
     x.style.display = "block";
-    //check if test reaches the end
+    //check if quiz reaches the end
     if (questionCount >= questions.length) {
       //output result
       terminateQuiz();
@@ -112,29 +116,32 @@ $(document).ready(function () {
   }
   //check option picked
   function checkAns() {
+    //save user's choices to an array
     var options = document.getElementsByName("options");
-    console.log(options);
+    //go through each option element in that array
     for (var j = 0; j < options.length; j++) {
+      //check if each option is picked
       if (options[j].checked) {
+        //save the picked option
         answerPicked = options[j].value;
       }
     }
 
     //check if picked option value match with correct answer for all save value
     if (answerPicked == questions[questionCount].answer) {
-      //add 1 to correctCount if picked correct answer
+      //I tried to change button outline to green if the correct answer is picked, but this did not seen to work :(
       $(".form-check-input").attr("class","btn btn-lg form-check-label bg-light btn-outline-success");
+      //add 1 to correctCount if picked correct answer
       correctCount++;
       console.log("correct");
-
-      //display "correct" below question
     }
     //if option picked is wrong
     else {
+       //I tried to change button outline to red if the wrong answer is picked, but this did not seen to work :(
       $(".form-check-input").attr("class","btn btn-lg form-check-label bg-light btn-outline-warning");
       console.log("incorrect");
+      //subtract 10 sec from timer
       secondLeft = secondLeft - 10;
-      //display "incorrect" below question
     }
     //add to question Count and display next question
     questionCount++;
@@ -143,23 +150,26 @@ $(document).ready(function () {
 
   //timer function
   function keepTimer() {
+    //start with 60 sec everytime when quiz start
     secondLeft = 60;
+    //timer goes down every second and remining time shown on the right upper corner
     timeInterval = setInterval(function () {
       secondLeft--;
       $("#quizTimer").text("Time Remain: " + secondLeft);
-
+      //when time runs out, stop the quiz and stop timer
       if (secondLeft === 0) {
         clearInterval(timeInterval);
         terminateQuiz();
       }
     }, 1000);
   }
-
+//output quiz result when quiz is finished
   function terminateQuiz() {
-    //output result
+    //stop timer
     clearInterval(timeInterval);
+    //hide timer display
     x.style.display = "none";
-
+//show result page with "all done" title, user's score, and options to enter initial for saving
     $("#mainContent").html(
       "<h1>All done!</h1>" +
         "<p>Your final score is " +
@@ -167,34 +177,39 @@ $(document).ready(function () {
         ".</p>" +
         "<div class='input-group' id='inputDiv'></div>"
     );
+    //input text option for user to enter initial
     $("#inputDiv").append(
       "<label for='userInitial'>Enter Initial: </label>" +
         "<input type='text' name='userInitial' id='userInitial' placeholder='your initial here'/>"
     );
+    //button for user to submit initial and score
     $("#inputDiv").append(
       "<button type='submit' class='btn btn-sm bg-light btn-outline-secondary' id='submitBtn'>Submit</button>"
     );
+    //save user initial and score to variables for puting them into an object later
     var userSavedInitial = document.querySelector("#userInitial");
     var userScore = correctCount;
 
-    //save initial to local storage
-
+    
+    //start saving to local storage function when submit button is clicked
     $("#submitBtn").on("click", function (event) {
       event.preventDefault();
+      //save user initial and score to an object
       var user = {
         userinitial: userSavedInitial.value,
         userscore: userScore,
       };
-
+      //check if user entered an empty initial
       if (user.userinitial === "") {
-        alert("Initial cannot be blank");
+        //alert user and stay on the same screen if inital is empty
+        return alert("Initial cannot be blank");
       } else {
+        //alert susccessfully saved if inital is entered
         alert("Score saved successfully");
-
-        console.log(user);
+        //save object with initial and score to local storage
         localStorage.setItem("user", JSON.stringify(user));
       }
-      //to the highscore page
+      //go to the highscore page
       highscorePage();
     });
     //reset quiz
@@ -204,9 +219,9 @@ $(document).ready(function () {
 
   //highscore page initation function
   function highscorePage() {
-    console.log(highestScore);
+    //get user object with inital and score
     var currentuser = JSON.parse(localStorage.getItem("user"));
-
+    //display high score page with highscore title, user's initial and score, as well as two buttons for restart and for clear history score
     $("#mainContent").html(
       "<h1 id=>Highscores</h1>" +
         "<p id='scoreRank'></p>" +
@@ -216,16 +231,16 @@ $(document).ready(function () {
       "<button type='button' class='btn btn-sm bg-light btn-outline-secondary' id='restartQuiz'>Go Back</button>" +
         "<button type='button' class='btn btn-sm bg-light btn-outline-secondary' id='clearScore'>Clear Highscores</button>"
     );
+    //if user score is higher than highest score, output user's score and initial
     if (currentuser.userscore > highestScore) {
       highestScore = currentuser.userScore;
       highScoreUserOutput =
         currentuser.userinitial + ": " + currentuser.userscore;
       $("#scoreRank").text(highScoreUserOutput);
-      console.log(highScoreUserOutput);
     }
     //if pressgoback, restartquiz
     $("#restartQuiz").on("click", startpage);
-
+    // if press clearScore, clear all score history and show no score available
     $("#clearScore").on("click", function () {
       $("#scoreRank").text("No Score available yet");
     });
