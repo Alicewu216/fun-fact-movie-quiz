@@ -168,19 +168,21 @@ $(document).ready(function () {
     $("#inputDiv").append(
       "<button type='submit' class='btn btn-sm' id='submitBtn'>Submit</button>"
     );
+    var userSavedInitial = document.querySelector("#userInitial").value;
     localStorage.setItem("score", correctCount);
+    localStorage.setItem("initial", userSavedInitial);
     //save initial to local storage
 
     $("#submitBtn").on("click", function (event) {
       event.preventDefault();
 
-      var userSavedInitial = document.querySelector("#userInitial").value;
+      
 
       if (userSavedInitial === "") {
         alert("Initial cannot be blank");
       } else {
         alert("Score saved successfully");
-        localStorage.setItem("initial", userSavedInitial);
+        
       }
       //to the highscore page
       highscorePage();
