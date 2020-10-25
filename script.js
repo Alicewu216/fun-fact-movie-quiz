@@ -53,6 +53,8 @@ $(document).ready(function () {
   var timeInterval = 0;
   var highestScore = 0;
   var highScoreUserOutput = "";
+  var x = document.getElementById("quizTimer");
+
   startpage();
 
   function startpage() {
@@ -64,6 +66,7 @@ $(document).ready(function () {
     );
     //upon clicking start, call displying question function
     $("#startBut").on("click", function () {
+      x.style.display = "block";
       displayQuestion();
       keepTimer();
     });
@@ -154,6 +157,7 @@ $(document).ready(function () {
   function terminateQuiz() {
     //output result
     clearInterval(timeInterval);
+    x.style.display = "none";
 
     $("#mainContent").html(
       "<h1>All done!</h1>" +
