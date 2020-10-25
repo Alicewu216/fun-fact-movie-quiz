@@ -8,7 +8,7 @@ $(document).ready(function () {
       b: "Spider Man",
       c: "Batman",
       d: "The Avengers",
-      answer: "b",
+      answer: "A",
     },
     {
       prompt:
@@ -17,7 +17,7 @@ $(document).ready(function () {
       b: "Titanic",
       c: "The Revenant",
       d: "The last King of Scotland",
-      answer: "c",
+      answer: "C",
     },
     {
       prompt: "3. In the 'Godfather' series, where was Vito Corleone born?",
@@ -25,7 +25,7 @@ $(document).ready(function () {
       b: "Athens",
       c: "New York City",
       d: "Rome",
-      answer: "a",
+      answer: "A",
     },
     {
       prompt:
@@ -34,7 +34,7 @@ $(document).ready(function () {
       b: "Best actress",
       c: "Best picture",
       d: "Best supporting actor",
-      answer: "a",
+      answer: "A",
     },
     {
       prompt: "5. In what year is The Great Gastby set?",
@@ -42,14 +42,14 @@ $(document).ready(function () {
       b: "1923",
       c: "1924",
       d: "1922",
-      answer: "d",
+      answer: "D",
     },
   ];
   //other global variable
   var questionCount = 0;
   var correctCount = 0;
-  var answerPicked = 0;
-  var secondLeft = 20;
+  var answerPicked = "";
+  var secondLeft = 60;
 
   //upon loading, show starting page
   $("#mainContent").html(
@@ -77,47 +77,52 @@ $(document).ready(function () {
       );
       //display options as radio class from bootstrap with default stacking(maybe need to condense code here)
       $("#mainContent").append(
-        "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='A'>" +
+        "<div class='form-check'><label for='optionA' class='btn btn-lg btn-secondary form-check-label'><input class='form-check-input' type='radio' name='options' id='optionA' value='A'>" +
           questions[questionCount].a +
           "</label></div>"
       );
       $("#mainContent").append(
-        "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='B'>" +
+        "<div class='form-check'><label for='optionB' class='btn btn-lg btn-secondary form-check-label'><input class='form-check-input' type='radio' name='options' id='optionB' value='B'>" +
           questions[questionCount].b +
           "</label></div>"
       );
       $("#mainContent").append(
-        "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='C'>" +
+        "<div class='form-check'><label for='optionC' class='btn btn-lg btn-secondary form-check-label '><input class='form-check-input' type='radio' name='options' id='optionC' value='C'>" +
           questions[questionCount].c +
           "</label></div>"
       );
       $("#mainContent").append(
-        "<div class='form-check'><label class='btn btn-lg btn-secondary'><input type='radio' name='options' value='D'>" +
+        "<div class='form-check'><label for='optionD' class='btn btn-lg btn-secondary form-check-label'><input class='form-check-input' type='radio' name='options' id='optionD' value='D'>" +
           questions[questionCount].d +
           "</label></div>"
       );
-      //call checkAns function once an option is picked
-      $(".btn").on("click", checkAns);
-    }
+      
+    }//call checkAns function once an option is picked
+      $(".form-check-input").on("click", checkAns);
   }
   //check option picked
   function checkAns() {
-    var optionsselected = document.getElementsByName("options");
-    console.log(optionsselected);
-    for (var j = 0; j < optionsselected.length; j++) {
-      if (optionsselected[j].checked) {
-        answerPicked = optionsselected[j].value;
+    var options = document.getElementsByName("options");
+    console.log(options);
+    for (var j = 0; j < options.length; j++) {
+      if (options[j].checked) {
+        answerPicked = options[j].value;
+        console.log(answerPicked);
       }
     }
+    
     //check if picked option value match with correct answer for all save value
-    if (answerPicked == questions[questionCount].answer) {
+    if (answerPicked == (questions[questionCount]).answer) {
       //add 1 to correctCount if picked correct answer
       correctCount++;
+      console.log("correct");
       //display "correct" below question
-      $("#mainContent").append("<p>Correct!</p>");
+      $("#mainContent").append("<div><p>Correct!</p></div>");
     }
     //if option picked is wrong
     else {
+      console.log("incorrect");
+      secondLeft = secondLeft-10;
       //display "incorrect" below question
       $("#mainContent").append("<p>Incorrect!</p>");
     }
@@ -141,7 +146,11 @@ $(document).ready(function () {
 
   function terminateQuiz() {
     //output result
-    $("#mainContent").html("You have completed the quiz.");
+    
+    $("#mainContent").html("<h1>All done!</h1>" + "<p>Your final score is " + correctCount + ".</p>" +  "<div class='input-group' id='inputDiv'></div>");
+    $("#inputDiv").append("<label for='userInitial'>Initial</label>" + "<input type='text' name='initial' id='userInitial' placeholder='your initial here'/>");
+    $("#inputDiv").append("<button type='submit' class='btn btn-primary mb-2'>Submit</button>");
+   
     //reset quiz
     questionCount = 0;
     correctCount = 0;
