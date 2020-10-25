@@ -50,18 +50,24 @@ $(document).ready(function () {
   var correctCount = 0;
   var answerPicked = "";
   var secondLeft = 60;
+  var timeInterval = 0;
 
-  //upon loading, show starting page
-  $("#mainContent").html(
-    "<h1 id='homePageTitle'>Funfact Movie Quiz Challenge</h1>" +
-      "<p id='homePagePara'>Try to answer the following funfact movie questions within the time limit. Keep in mind that incorrect answers will penalize your score and subtract 10 seconds from your time.</p>" +
-      "<button id='startBut' class='btn btn-lg'>Start Quiz</button>"
-  );
-  //upon clicking start, call displying question function
-  $("#startBut").on("click", function () {
-    displayQuestion();
-    keepTimer();
-  });
+  startpage();
+
+  function startpage() {
+    //upon loading, show starting page
+    $("#mainContent").html(
+      "<h1 id='homePageTitle'>Funfact Movie Quiz Challenge</h1>" +
+        "<p id='homePagePara'>Try to answer the following funfact movie questions within the time limit. Keep in mind that incorrect answers will penalize your score and subtract 10 seconds from your time.</p>" +
+        "<button id='startBut' class='btn btn-lg'>Start Quiz</button>"
+    );
+    //upon clicking start, call displying question function
+    $("#startBut").on("click", function () {
+      displayQuestion();
+      keepTimer();
+    });
+  }
+
   //function that get and display current question
   function displayQuestion() {
     //check if test reaches the end
@@ -96,9 +102,8 @@ $(document).ready(function () {
           questions[questionCount].d +
           "</label></div>"
       );
-      
-    }//call checkAns function once an option is picked
-      $(".form-check-input").on("click", checkAns);
+    } //call checkAns function once an option is picked
+    $(".form-check-input").on("click", checkAns);
   }
   //check option picked
   function checkAns() {
@@ -110,21 +115,21 @@ $(document).ready(function () {
         console.log(answerPicked);
       }
     }
-    
+
     //check if picked option value match with correct answer for all save value
-    if (answerPicked == (questions[questionCount]).answer) {
+    if (answerPicked == questions[questionCount].answer) {
+      $("#mainContent").append("<div><p>Correct!</p></div>");
       //add 1 to correctCount if picked correct answer
       correctCount++;
       console.log("correct");
       //display "correct" below question
-      $("#mainContent").append("<div><p>Correct!</p></div>");
     }
     //if option picked is wrong
     else {
-      console.log("incorrect");
-      secondLeft = secondLeft-10;
-      //display "incorrect" below question
       $("#mainContent").append("<p>Incorrect!</p>");
+      console.log("incorrect");
+      secondLeft = secondLeft - 10;
+      //display "incorrect" below question
     }
     //add to question Count and display next question
     questionCount++;
@@ -133,26 +138,71 @@ $(document).ready(function () {
 
   //timer function
   function keepTimer() {
-    var timeInterval = setInterval(function () {
+    secondLeft = 60;
+    timeInterval = setInterval(function () {
       secondLeft--;
       $("#quizTimer").text("Time Remain: " + secondLeft);
 
-    if (secondLeft === 0) {
-      clearInterval(timeInterval);
-      terminateQuiz();
-    }
+      if (secondLeft === 0) {
+        clearInterval(timeInterval);
+        terminateQuiz();
+      }
     }, 1000);
   }
 
   function terminateQuiz() {
     //output result
-    
-    $("#mainContent").html("<h1>All done!</h1>" + "<p>Your final score is " + correctCount + ".</p>" +  "<div class='input-group' id='inputDiv'></div>");
-    $("#inputDiv").append("<label for='userInitial'>Initial</label>" + "<input type='text' name='initial' id='userInitial' placeholder='your initial here'/>");
-    $("#inputDiv").append("<button type='submit' class='btn btn-primary mb-2'>Submit</button>");
-   
+    clearInterval(timeInterval);
+
+    $("#mainContent").html(
+      "<h1>All done!</h1>" +
+        "<p>Your final score is " +
+        correctCount +
+        ".</p>" +
+        "<div class='input-group' id='inputDiv'></div>"
+    );
+    $("#inputDiv").append(
+      "<label for='userInitial'>Enter Initial: </label>" +
+        "<input type='text' name='userInitial' id='userInitial' placeholder='your initial here'/>"
+    );
+    $("#inputDiv").append(
+      "<button type='submit' class='btn btn-sm' id='submitBtn'>Submit</button>"
+    );
+    localStorage.setItem("score", correctCount);
+    //save initial to local storage
+
+    $("#submitBtn").on("click", function (event) {
+      event.preventDefault();
+
+      var userSavedInitial = document.querySelector("#userInitial").value;
+
+      if (userSavedInitial === "") {
+        alert("Initial cannot be blank");
+      } else {
+        alert("Score saved successfully");
+        localStorage.setItem("initial", userSavedInitial);
+      }
+      //to the highscore page
+      highscorePage();
+    });
     //reset quiz
     questionCount = 0;
     correctCount = 0;
+  }
+
+  //highscore page initation function
+  function highscorePage() {
+    $("#mainContent").html(
+      "<h1>Highscores</h1>" +
+        "<p>Highestscore</p>" +
+        "<div id='resetBtns'></div>"
+    );
+    $("#resetBtns").append(
+      "<button type='button' class='btn btn-sm' id='restartQuiz'>Go Back</button>" +
+        "<button type='button' class='btn btn-sm' id='clearSCore'>Clear Highscores</button>"
+    );
+
+    //if pressgoback, restartquiz
+    $("#restartQuiz").on("click",startpage);
   }
 });
