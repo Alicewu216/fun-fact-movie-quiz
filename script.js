@@ -211,7 +211,7 @@ $(document).ready(function () {
       "<button type='button' class='btn btn-sm' id='restartQuiz'>Go Back</button>" +
         "<button type='button' class='btn btn-sm' id='clearScore'>Clear Highscores</button>"
     );
-if (currentuser.userscore > highestScore) {
+    if (currentuser.userscore > highestScore) {
       highestScore = currentuser.userScore;
       highScoreUserOutput =
         currentuser.userinitial + ": " + currentuser.userscore;
@@ -221,9 +221,8 @@ if (currentuser.userscore > highestScore) {
     //if pressgoback, restartquiz
     $("#restartQuiz").on("click", startpage);
 
-    $('#clearScore').on("click",function() {
-    $("#scoreRank").text("No Score available yet");
-
+    $("#clearScore").on("click", function () {
+      $("#scoreRank").text("No Score available yet");
     });
   }
 });
